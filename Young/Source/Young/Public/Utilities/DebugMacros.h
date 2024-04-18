@@ -1,13 +1,16 @@
 #pragma once
 
+#define Check(Expression) \
+	checkf(Expression, TEXT("Error! Check failed in file %s at line %d."), *FString(__FILE__), __LINE__);
+
 #define CheckMsg(Expression, Message, ...) \
-	checkf(Expression, TEXT("Error! Check failed in file %s at line %d: %s"), *FString(__FILE__), __LINE__, ##__VA_ARGS__);
+	checkf(Expression, TEXT("Error! Check failed in file %s at line %d: \"%s.\""), *FString(__FILE__), __LINE__, ##__VA_ARGS__);
 
-#define CheckMsgNoRet(Expression, Message, ...) \
-	ensureAlwaysMsgf(Expression, TEXT("Error! Check failed in file %s at line %d: %s"), *FString(__FILE__), __LINE__, ##__VA_ARGS__);
+#define SafeCheckMsgNoRet(Expression, Message, ...) \
+	ensureAlwaysMsgf(Expression, TEXT("Error! Check failed in file %s at line %d: \"%s.\""), *FString(__FILE__), __LINE__, ##__VA_ARGS__);
 
-#define CheckMsgRet(Expression, ReturnValue, Message, ...) \
-	if (!(ensureAlwaysMsgf(Expression, TEXT("Error! Check failed in file %s at line %d: %s"), *FString(__FILE__), __LINE__, ##__VA_ARGS__)) \
+#define SafeCheckMsgRet(Expression, ReturnValue, Message, ...) \
+	if (!(ensureAlwaysMsgf(Expression, TEXT("Error! Check failed in file %s at line %d: \"%s.\""), *FString(__FILE__), __LINE__, ##__VA_ARGS__)) \
 	{ \
 		return ReturnValue; \
 	}
