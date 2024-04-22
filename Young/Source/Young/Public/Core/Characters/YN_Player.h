@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 
 class UYN_PlayerHUD;
+class UYN_PlayerLineTraceComponent;
 class UYN_SafeSpawnComponent;
 
 UCLASS()
@@ -45,6 +46,8 @@ protected:
 	TObjectPtr<USpringArmComponent> SpringArm;
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<UCameraComponent> Camera;
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TObjectPtr<UYN_PlayerLineTraceComponent> LineTraceComponent;
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<UYN_SafeSpawnComponent> SafeSpawnComponent;
 

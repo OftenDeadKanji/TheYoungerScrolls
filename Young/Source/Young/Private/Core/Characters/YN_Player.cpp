@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 
 #include "Core/Characters/Components/YN_SafeSpawnComponent.h"
+#include "Core/Characters/Components/YN_PlayerLineTraceComponent.h"
 #include "Core/Characters/YN_CharacterStats.h"
 #include "Utilities/DebugMacros.h"
 #include "UI/YN_UserInterfaceSubsystem.h"
@@ -24,6 +25,8 @@ AYN_Player::AYN_Player()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 	
+	LineTraceComponent = CreateDefaultSubobject<UYN_PlayerLineTraceComponent>(TEXT("LineTraceComponent"));
+
 	SafeSpawnComponent = CreateDefaultSubobject<UYN_SafeSpawnComponent>(TEXT("SafeSpawnComponent"));
 	SafeSpawnComponent->SetupAttachment(RootComponent);
 
@@ -49,7 +52,6 @@ void AYN_Player::Move(const FVector2D& Direction)
 {
 	if (Direction.Size() > 0.0f)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("D = %s"), *Direction.ToString());
 		FVector Forward = Camera->GetForwardVector();
 		Forward.Z = 0.0;
 		Forward.Normalize();
@@ -65,7 +67,7 @@ void AYN_Player::Move(const FVector2D& Direction)
 		Movement.Normalize();
 		GetCharacterMovement()->AddInputVector(Movement);
 
-		//UE_LOG(LogTemp, Warning, TEXT("M = %s"), *Movement.ToString());
+		SetActorRotation(Movement.Rotation());
 	}
 }
 
