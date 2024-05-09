@@ -35,6 +35,11 @@ protected:
 	void CallStartCrouch(const FInputActionValue& Value);
 	UFUNCTION(BlueprintCallable)
 	void CallStopCrouch(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+	void CallInteractPrimary(const FInputActionValue& Value);
+	UFUNCTION(BlueprintCallable)
+	void CallInteractSecondary(const FInputActionValue& Value);
 #pragma endregion
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AYN_Player> PlayerClass;

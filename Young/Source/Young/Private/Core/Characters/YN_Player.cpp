@@ -10,9 +10,11 @@
 #include "Core/Characters/Components/YN_SafeSpawnComponent.h"
 #include "Core/Characters/Components/YN_PlayerLineTraceComponent.h"
 #include "Core/Characters/YN_CharacterStats.h"
+#include "Core/Controllers/YN_PlayerController.h"
 #include "Utilities/DebugMacros.h"
 #include "UI/YN_UserInterfaceSubsystem.h"
 #include "UI/Widgets/Player/YN_PlayerHUD.h"
+#include "Common/Interaction/YN_Interactable.h"
 
 AYN_Player::AYN_Player()
 {
@@ -106,6 +108,22 @@ void AYN_Player::StopCrouch()
 {
 	Super::UnCrouch();
 }
+
+void AYN_Player::InteractPrimary()
+{
+	Check(LineTraceComponent);
+
+	if (TScriptInterface<IYN_Interactable> Interactable = LineTraceComponent->GetHitInteractable())
+	{
+		if (IsValid(Interactable.GetObject()))
+		{
+			Interactable->Execute_OnUsePressed(Interactable.GetObject(), Cast<AYN_PlayerController>(GetController()));
+		}
+	}
+}
+
+void AYN_Player::InteractSecondary()
+{}
 
 void AYN_Player::BeginPlay()
 {

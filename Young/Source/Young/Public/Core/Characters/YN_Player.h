@@ -35,6 +35,11 @@ public:
 	void StartCrouch();
 	UFUNCTION(BlueprintCallable)
 	void StopCrouch();
+
+	UFUNCTION(BlueprintCallable)
+	void InteractPrimary();
+	UFUNCTION(BlueprintCallable)
+	void InteractSecondary();
 #pragma endregion
 protected:
 	virtual void BeginPlay() override;

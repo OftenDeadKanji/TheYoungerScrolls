@@ -5,12 +5,20 @@
 
 #include "Net/UnrealNetwork.h"
 
+#include "Core/Characters/Components/YN_InventoryComponent.h"
 #include "Utilities/DebugMacros.h"
 
 AYN_Character::AYN_Character()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+
+	Inventory = CreateDefaultSubobject<UYN_InventoryComponent>(TEXT("Inventory"));
+}
+
+UYN_InventoryComponent* AYN_Character::GetInventory()
+{
+	return Inventory;
 }
 
 void AYN_Character::BeginPlay()
@@ -37,9 +45,9 @@ void AYN_Character::Authority_StatsUpdateCallback()
 	Stats.CurrentMana = FMath::Clamp(Stats.CurrentMana, 0.0f, Stats.MaxMana);
 }
 
-void AYN_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
-	DOREPLIFETIME(AYN_Character, Stats);
-}
+//void AYN_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//	
+//	DOREPLIFETIME(AYN_Character, Stats);
+//}

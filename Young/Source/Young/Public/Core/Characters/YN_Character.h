@@ -7,6 +7,7 @@
 #include "Core/Characters/YN_CharacterStats.h"
 #include "YN_Character.generated.h"
 
+class UYN_InventoryComponent;
 
 UCLASS()
 class YOUNG_API AYN_Character : public ACharacter
@@ -16,12 +17,16 @@ class YOUNG_API AYN_Character : public ACharacter
 public:
 	AYN_Character();
 
+	UYN_InventoryComponent* GetInventory();
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void Authority_StatsUpdateCallback();
 
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UYN_InventoryComponent> Inventory;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
 	FYN_CharacterStats Stats;
 
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerStats")

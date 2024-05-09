@@ -39,10 +39,12 @@ void AYN_PlayerController::SetupInputComponent()
 	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerLookAround")), ETriggerEvent::Triggered, this, &AYN_PlayerController::CallLookAround);
 	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerLookAround")), ETriggerEvent::Completed, this, &AYN_PlayerController::CallLookAround);
 
-	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerJump")), ETriggerEvent::Triggered, this, &AYN_PlayerController::CallJump);
+	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerJump")), ETriggerEvent::Started, this, &AYN_PlayerController::CallJump);
 
 	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerCrouch")), ETriggerEvent::Triggered, this, &AYN_PlayerController::CallStartCrouch);
 	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerCrouch")), ETriggerEvent::Completed, this, &AYN_PlayerController::CallStopCrouch);
+
+	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_InteractPrimary")), ETriggerEvent::Started, this, &AYN_PlayerController::CallInteractPrimary);
 }
 
 void AYN_PlayerController::BeginPlay()
@@ -111,6 +113,22 @@ void AYN_PlayerController::CallStopCrouch(const FInputActionValue& Value)
 	if (PossessedPlayer)
 	{
 		PossessedPlayer->StopCrouch();
+	}
+}
+
+void AYN_PlayerController::CallInteractPrimary(const FInputActionValue& Value)
+{
+	if (PossessedPlayer)
+	{
+		PossessedPlayer->InteractPrimary();
+	}
+}
+
+void AYN_PlayerController::CallInteractSecondary(const FInputActionValue& Value)
+{
+	if (PossessedPlayer)
+	{
+		PossessedPlayer->InteractSecondary();
 	}
 }
 
