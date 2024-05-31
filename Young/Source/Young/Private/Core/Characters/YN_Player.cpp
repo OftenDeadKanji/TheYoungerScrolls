@@ -3,6 +3,7 @@
 
 #include "Core/Characters/YN_Player.h"
 
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -15,6 +16,7 @@
 #include "UI/YN_UserInterfaceSubsystem.h"
 #include "UI/Widgets/Player/YN_PlayerHUD.h"
 #include "Common/Interaction/YN_Interactable.h"
+#include "UI/Widgets/Player/Inventory/YN_InventoryWidget.h"
 
 AYN_Player::AYN_Player()
 {
@@ -52,6 +54,11 @@ void AYN_Player::Tick(float DeltaTime)
 
 void AYN_Player::Move(const FVector2D& Direction)
 {
+	if(UISubsystem->GetTopWidget()->IsBlockingMovementAndCameraInput())
+	{
+		return;
+	}
+
 	if (Direction.Size() > 0.0f)
 	{
 		FVector Forward = Camera->GetForwardVector();
@@ -75,6 +82,11 @@ void AYN_Player::Move(const FVector2D& Direction)
 
 void AYN_Player::LookAround(const FVector2D& Direction)
 {
+	if(UISubsystem->GetTopWidget()->IsBlockingMovementAndCameraInput())
+	{
+		return;
+	}
+
 	if (Direction.Size() > 0.0f)
 	{
 		UWorld* World = GetWorld();
@@ -96,16 +108,31 @@ void AYN_Player::LookAround(const FVector2D& Direction)
 
 void AYN_Player::Jump()
 {
+	if(UISubsystem->GetTopWidget()->IsBlockingMovementAndCameraInput())
+	{
+		return;
+	}
+
 	Super::Jump();
 }
 
 void AYN_Player::StartCrouch()
 {
+	if(UISubsystem->GetTopWidget()->IsBlockingMovementAndCameraInput())
+	{
+		return;
+	}
+
 	Super::Crouch();
 }
 
 void AYN_Player::StopCrouch()
 {
+	if(UISubsystem->GetTopWidget()->IsBlockingMovementAndCameraInput())
+	{
+		return;
+	}
+
 	Super::UnCrouch();
 }
 
@@ -125,6 +152,31 @@ void AYN_Player::InteractPrimary()
 void AYN_Player::InteractSecondary()
 {}
 
+void AYN_Player::ToggleInventory()
+{
+	Check(Inventory);
+	Check(InventoryWidget);
+
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	Check(PlayerController);
+
+	if(InventoryWidget->GetVisibility() == ESlateVisibility::Collapsed)
+	{
+		InventoryWidget->Init(Inventory);
+		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+
+		UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController);
+		PlayerController->SetShowMouseCursor(true);
+	}
+	else
+	{
+		InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+		PlayerController->SetShowMouseCursor(false);
+	}
+}
+
 void AYN_Player::BeginPlay()
 {
 	Super::BeginPlay();
@@ -134,19 +186,26 @@ void AYN_Player::BeginPlay()
 
 	if (IsLocallyControlled())
 	{
-		if (SafeCheckMsgNoRet(PlayerHUDClass, TEXT("Player HUD class not set. Was that intentional?")))
-		{
-			APlayerController* PlayerController = Cast<APlayerController>(GetController());
-			Check(PlayerController);
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		Check(PlayerController);
 
-			ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
-			Check(LocalPlayer);
+		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
+		Check(LocalPlayer);
 
-			UYN_UserInterfaceSubsystem* UISubsystem = LocalPlayer->GetSubsystem<UYN_UserInterfaceSubsystem>();
-			Check(UISubsystem);
+		UISubsystem = LocalPlayer->GetSubsystem<UYN_UserInterfaceSubsystem>();
+		Check(UISubsystem);
 
-			PlayerHUD = UISubsystem->CreateAndPushWidget<UYN_PlayerHUD>(PlayerHUDClass);
-		}
+		Check(PlayerHUDClass);
+		PlayerHUD = UISubsystem->CreateAndPushWidget<UYN_PlayerHUD>(PlayerHUDClass);
+		Check(PlayerHUD);
+
+		PlayerHUD->SetVisibility(ESlateVisibility::HitTestInvisible);
+
+		Check(InventoryWidgetClass);
+		InventoryWidget = Cast<UYN_InventoryWidget>(UISubsystem->CreateAndPushWidget(InventoryWidgetClass));
+		Check(InventoryWidget);
+
+		InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
 

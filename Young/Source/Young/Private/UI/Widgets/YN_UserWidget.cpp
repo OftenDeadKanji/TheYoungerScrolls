@@ -5,5 +5,5 @@
 
 bool UYN_UserWidget::IsBlockingMovementAndCameraInput() const
 {
-	return bBlockingMovementAndCameraInput;
+	return GetVisibility() != ESlateVisibility::Collapsed && bBlockingMovementAndCameraInput;
 }

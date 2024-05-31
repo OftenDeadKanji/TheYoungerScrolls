@@ -11,7 +11,7 @@ UYN_InventoryComponent::UYN_InventoryComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-const TArray<UYN_InventoryItem*> UYN_InventoryComponent::GetItems() const
+const TArray<UYN_InventoryItem*>& UYN_InventoryComponent::GetItems() const
 {
 	return Items;
 }
@@ -32,12 +32,18 @@ void UYN_InventoryComponent::AddWeapon(UYN_Weapon* Weapon)
 	}
 
 	Weapons.Add(Weapon);
+	ItemsWeapons.Add(Weapon);
 	Items.Add(Weapon);
 }
 
-const TArray<UYN_Weapon*> UYN_InventoryComponent::GetWeapons() const
+const TArray<UYN_Weapon*>& UYN_InventoryComponent::GetWeapons() const
 {
 	return Weapons;
+}
+
+const TArray<UYN_InventoryItem*>& UYN_InventoryComponent::GetWeaponsAsItems() const
+{
+	return ItemsWeapons;
 }
 
 void UYN_InventoryComponent::BeginPlay()

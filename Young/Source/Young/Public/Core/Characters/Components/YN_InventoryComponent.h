@@ -18,17 +18,21 @@ public:
 	UYN_InventoryComponent();
 
 	UFUNCTION(BlueprintCallable)
-	const TArray<UYN_InventoryItem*> GetItems() const;
+	const TArray<UYN_InventoryItem*>& GetItems() const;
 
 	UFUNCTION(BlueprintCallable)
 	void AddWeapon(UYN_Weapon* Weapon);
 	UFUNCTION(BlueprintCallable)
-	const TArray<UYN_Weapon*> GetWeapons() const;
+	const TArray<UYN_Weapon*>& GetWeapons() const;
+	UFUNCTION(BlueprintCallable)
+	const TArray<UYN_InventoryItem*>& GetWeaponsAsItems() const;
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<UYN_InventoryItem*> Items;
+	UPROPERTY(VisibleAnywhere)
+	TArray<UYN_InventoryItem*> ItemsWeapons;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<UYN_Weapon*> Weapons;

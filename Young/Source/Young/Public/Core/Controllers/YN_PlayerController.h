@@ -40,6 +40,12 @@ protected:
 	void CallInteractPrimary(const FInputActionValue& Value);
 	UFUNCTION(BlueprintCallable)
 	void CallInteractSecondary(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+	void CallToggleInventory(const FInputActionValue& Value);
+
+	//UFUNCTION(BlueprintCallable)
+	//void CallWidgetMoveFocus(const FInputActionValue& Value);
 #pragma endregion
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AYN_Player> PlayerClass;

@@ -9,9 +9,11 @@
 class UCameraComponent;
 class USpringArmComponent;
 
+class UYN_InventoryWidget;
 class UYN_PlayerHUD;
 class UYN_PlayerLineTraceComponent;
 class UYN_SafeSpawnComponent;
+class UYN_UserInterfaceSubsystem;
 
 UCLASS()
 class YOUNG_API AYN_Player : public AYN_Character
@@ -40,6 +42,9 @@ public:
 	void InteractPrimary();
 	UFUNCTION(BlueprintCallable)
 	void InteractSecondary();
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleInventory();
 #pragma endregion
 protected:
 	virtual void BeginPlay() override;
@@ -65,4 +70,11 @@ protected:
 	TSubclassOf<UYN_PlayerHUD> PlayerHUDClass;
 	UPROPERTY(BlueprintReadWrite, Category = "UI")
 	TObjectPtr<UYN_PlayerHUD> PlayerHUD;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UYN_InventoryWidget> InventoryWidgetClass;
+	UPROPERTY(BlueprintReadWrite, Category = "UI")
+	TObjectPtr<UYN_InventoryWidget> InventoryWidget;
+
+	UYN_UserInterfaceSubsystem* UISubsystem;
 };

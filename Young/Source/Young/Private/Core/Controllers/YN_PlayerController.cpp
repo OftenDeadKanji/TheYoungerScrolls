@@ -45,6 +45,8 @@ void AYN_PlayerController::SetupInputComponent()
 	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerCrouch")), ETriggerEvent::Completed, this, &AYN_PlayerController::CallStopCrouch);
 
 	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_InteractPrimary")), ETriggerEvent::Started, this, &AYN_PlayerController::CallInteractPrimary);
+
+	InputCmp->BindAction(PlayerInputMapping->GetAction(TEXT("IA_PlayerInventory")), ETriggerEvent::Started, this, &AYN_PlayerController::CallToggleInventory);
 }
 
 void AYN_PlayerController::BeginPlay()
@@ -129,6 +131,14 @@ void AYN_PlayerController::CallInteractSecondary(const FInputActionValue& Value)
 	if (PossessedPlayer)
 	{
 		PossessedPlayer->InteractSecondary();
+	}
+}
+
+void AYN_PlayerController::CallToggleInventory(const FInputActionValue& Value)
+{
+	if(PossessedPlayer)
+	{
+		PossessedPlayer->ToggleInventory();
 	}
 }
 
