@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "YN_InventoryItem.generated.h"
 
 class UYN_InventoryComponent;
@@ -15,7 +14,7 @@ struct FYN_InventoryItemData
 	GENERATED_BODY()
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
-	UYN_InventoryItemConstData* ConstData;
+	TObjectPtr<UYN_InventoryItemConstData> ConstData;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 	int Count;

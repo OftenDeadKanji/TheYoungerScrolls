@@ -3,12 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "YN_CharacterStats.generated.h"
 
-/**
- * 
- */
+
 USTRUCT(BlueprintType)
 struct FYN_CharacterStats
 {

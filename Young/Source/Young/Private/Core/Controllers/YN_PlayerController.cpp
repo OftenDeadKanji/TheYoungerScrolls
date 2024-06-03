@@ -79,7 +79,7 @@ void AYN_PlayerController::BeginPlay()
 void AYN_PlayerController::CallMove(const FInputActionValue& Value)
 {
 	FVector2D Direction = Value.Get<FVector2D>();
-	if (PossessedPlayer)
+	if (PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->Move(Direction);
 	}
@@ -88,7 +88,7 @@ void AYN_PlayerController::CallMove(const FInputActionValue& Value)
 void AYN_PlayerController::CallLookAround(const FInputActionValue& Value)
 {
 	FVector2D Direction = Value.Get<FVector2D>();
-	if (PossessedPlayer)
+	if (PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->LookAround(Direction);
 	}
@@ -96,7 +96,7 @@ void AYN_PlayerController::CallLookAround(const FInputActionValue& Value)
 
 void AYN_PlayerController::CallJump(const FInputActionValue& Value)
 {
-	if (PossessedPlayer)
+	if (PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->Jump();
 	}
@@ -104,7 +104,7 @@ void AYN_PlayerController::CallJump(const FInputActionValue& Value)
 
 void AYN_PlayerController::CallStartCrouch(const FInputActionValue& Value)
 {
-	if (PossessedPlayer)
+	if (PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->StartCrouch();
 	}
@@ -112,7 +112,7 @@ void AYN_PlayerController::CallStartCrouch(const FInputActionValue& Value)
 
 void AYN_PlayerController::CallStopCrouch(const FInputActionValue& Value)
 {
-	if (PossessedPlayer)
+	if (PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->StopCrouch();
 	}
@@ -120,7 +120,7 @@ void AYN_PlayerController::CallStopCrouch(const FInputActionValue& Value)
 
 void AYN_PlayerController::CallInteractPrimary(const FInputActionValue& Value)
 {
-	if (PossessedPlayer)
+	if (PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->InteractPrimary();
 	}
@@ -128,7 +128,7 @@ void AYN_PlayerController::CallInteractPrimary(const FInputActionValue& Value)
 
 void AYN_PlayerController::CallInteractSecondary(const FInputActionValue& Value)
 {
-	if (PossessedPlayer)
+	if (PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->InteractSecondary();
 	}
@@ -136,7 +136,7 @@ void AYN_PlayerController::CallInteractSecondary(const FInputActionValue& Value)
 
 void AYN_PlayerController::CallToggleInventory(const FInputActionValue& Value)
 {
-	if(PossessedPlayer)
+	if(PossessedPlayer.IsValid())
 	{
 		PossessedPlayer->ToggleInventory();
 	}

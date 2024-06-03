@@ -9,7 +9,7 @@
 class UImage;
 class UButton;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHovered, UYN_ImageButtonWidget*, Widget);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnImageButtonHovered, UYN_ImageButtonWidget*, Widget);
 
 UCLASS()
 class YOUNG_API UYN_ImageButtonWidget : public UYN_UserWidget
@@ -17,7 +17,7 @@ class YOUNG_API UYN_ImageButtonWidget : public UYN_UserWidget
 	GENERATED_BODY()
 	
 public:
-	FOnHovered OnHovered;
+	FOnImageButtonHovered OnHovered;
 
 	UImage* GetImage();
 protected:

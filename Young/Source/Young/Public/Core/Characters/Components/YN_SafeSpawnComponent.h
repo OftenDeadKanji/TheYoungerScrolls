@@ -16,9 +16,9 @@ class YOUNG_API UYN_SafeSpawnComponent : public UCapsuleComponent
 public:
 	UYN_SafeSpawnComponent();
 
-	void StartSafeSpawn(UPrimitiveComponent* UpdatedComponent);
-
 	FOnSafeSpawned OnSafeSpawned;
+
+	void StartSafeSpawn(UPrimitiveComponent* UpdatedComponent);
 protected:
 	virtual void BeginPlay() override;
 
@@ -27,7 +27,7 @@ protected:
 
 	void EndSafeSpawn();
 
-	UPrimitiveComponent* OwnerUpdatedComponent;
+	TWeakObjectPtr<UPrimitiveComponent> OwnerUpdatedComponent;
 
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(EditAnywhere)

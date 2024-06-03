@@ -37,5 +37,5 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UYN_InventorySectionWidget> Section;
 
-	UYN_InventoryComponent* PlayerInventory;
+	TWeakObjectPtr<UYN_InventoryComponent> PlayerInventory;
 };

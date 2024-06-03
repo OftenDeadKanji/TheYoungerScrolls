@@ -25,7 +25,7 @@ public:
 	void OnUseReleased(AYN_PlayerController* PlayerController);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnPrimeryActionPressed(AYN_PlayerController* PlayerController);
+	void OnPrimaryActionPressed(AYN_PlayerController* PlayerController);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPrimaryActionReleased(AYN_PlayerController* PlayerController);
 

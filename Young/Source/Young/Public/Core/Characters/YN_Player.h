@@ -46,6 +46,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInventory();
 #pragma endregion
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -76,5 +77,5 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "UI")
 	TObjectPtr<UYN_InventoryWidget> InventoryWidget;
 
-	UYN_UserInterfaceSubsystem* UISubsystem;
+	TWeakObjectPtr<UYN_UserInterfaceSubsystem> UISubsystem;
 };

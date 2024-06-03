@@ -16,7 +16,7 @@ AYN_Character::AYN_Character()
 	Inventory = CreateDefaultSubobject<UYN_InventoryComponent>(TEXT("Inventory"));
 }
 
-UYN_InventoryComponent* AYN_Character::GetInventory()
+UYN_InventoryComponent* AYN_Character::GetInventory() const
 {
 	return Inventory;
 }
@@ -45,9 +45,9 @@ void AYN_Character::Authority_StatsUpdateCallback()
 	Stats.CurrentMana = FMath::Clamp(Stats.CurrentMana, 0.0f, Stats.MaxMana);
 }
 
-//void AYN_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-//{
-//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-//	
-//	DOREPLIFETIME(AYN_Character, Stats);
-//}
+void AYN_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(AYN_Character, Stats);
+}

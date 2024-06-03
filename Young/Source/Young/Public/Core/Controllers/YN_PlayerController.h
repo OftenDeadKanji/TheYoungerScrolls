@@ -51,7 +51,7 @@ protected:
 	TSubclassOf<AYN_Player> PlayerClass;
 
 	UPROPERTY(Replicated)
-	AYN_Player* PossessedPlayer;
+	TWeakObjectPtr<AYN_Player> PossessedPlayer;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UYN_InputMappingContext> PlayerInputMapping;

@@ -21,14 +21,11 @@ public:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UFUNCTION(BlueprintCallable)
-	AActor* GetHitActor() const;
+	const TWeakObjectPtr<AActor>& GetHitActor() const;
 
-	UFUNCTION(BlueprintCallable)
-	UPrimitiveComponent* GetHitComponent() const;
+	const TWeakObjectPtr<UPrimitiveComponent>& GetHitComponent() const;
 
-	UFUNCTION(BlueprintCallable)
-	TScriptInterface<IYN_Interactable> GetHitInteractable() const;
+	const TScriptInterface<IYN_Interactable>& GetHitInteractable() const;
 protected:
 	virtual void BeginPlay() override;
 
@@ -38,13 +35,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Line trace settings")
 	TEnumAsByte<ECollisionChannel> TraceChannel;
 
-	UCameraComponent* PlayerCamera;
+	TWeakObjectPtr<UCameraComponent> PlayerCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Hit actor data")
-	AActor* HitActor;
+	TWeakObjectPtr<AActor> HitActor;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Hit actor data")
-	UPrimitiveComponent* HitComponent;
+	TWeakObjectPtr<UPrimitiveComponent> HitComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Hit actor data")
 	TScriptInterface<IYN_Interactable> HitInteractable;

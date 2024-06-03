@@ -14,7 +14,7 @@ class UYN_InventoryItemConstData : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	const FText& GetName() const;
+	const FText& GetShortName() const;
 
 	const FText& GetDescription() const;
 
@@ -30,7 +30,7 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FText Name;
+	FText ShortName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText Description;

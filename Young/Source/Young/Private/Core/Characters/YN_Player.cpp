@@ -193,7 +193,7 @@ void AYN_Player::BeginPlay()
 		Check(LocalPlayer);
 
 		UISubsystem = LocalPlayer->GetSubsystem<UYN_UserInterfaceSubsystem>();
-		Check(UISubsystem);
+		Check(UISubsystem.IsValid());
 
 		Check(PlayerHUDClass);
 		PlayerHUD = UISubsystem->CreateAndPushWidget<UYN_PlayerHUD>(PlayerHUDClass);

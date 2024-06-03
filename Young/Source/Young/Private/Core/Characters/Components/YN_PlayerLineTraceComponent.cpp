@@ -34,15 +34,15 @@ void UYN_PlayerLineTraceComponent::TickComponent(float DeltaTime, ELevelTick Tic
 	HitActor = Hit.GetActor();
 	HitComponent = Hit.GetComponent();
 
-	if (HitActor && HitActor->Implements<UYN_Interactable>())
+	if (HitActor.IsValid() && HitActor->Implements<UYN_Interactable>())
 	{
-		HitInteractable = TScriptInterface<IYN_Interactable>(HitActor);
+		HitInteractable = TScriptInterface<IYN_Interactable>(HitActor.Get());
 	}
 
 #if WITH_EDITORONLY_DATA
 	if (bLogOnScreen)
 	{
-		if (HitActor)
+		if (HitActor.IsValid())
 		{
 			FString Message;
 			
@@ -62,7 +62,7 @@ void UYN_PlayerLineTraceComponent::TickComponent(float DeltaTime, ELevelTick Tic
 	if (bDebugDraw)
 	{
 		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, -1.0f, 0, 1.5f);
-		if (HitActor)
+		if (HitActor.IsValid())
 		{
 			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 2.0f, 16, FColor::Green);
 		}
@@ -70,17 +70,17 @@ void UYN_PlayerLineTraceComponent::TickComponent(float DeltaTime, ELevelTick Tic
 #endif 
 }
 
-AActor* UYN_PlayerLineTraceComponent::GetHitActor() const
+const TWeakObjectPtr<AActor>& UYN_PlayerLineTraceComponent::GetHitActor() const
 {
 	return HitActor;
 }
 
-UPrimitiveComponent* UYN_PlayerLineTraceComponent::GetHitComponent() const
+const TWeakObjectPtr<UPrimitiveComponent>& UYN_PlayerLineTraceComponent::GetHitComponent() const
 {
 	return HitComponent;
 }
 
-TScriptInterface<IYN_Interactable> UYN_PlayerLineTraceComponent::GetHitInteractable() const
+const TScriptInterface<IYN_Interactable>& UYN_PlayerLineTraceComponent::GetHitInteractable() const
 {
 	return HitInteractable;
 }
@@ -93,6 +93,6 @@ void UYN_PlayerLineTraceComponent::BeginPlay()
 	Check(Owner);
 
 	PlayerCamera = Owner->GetComponentByClass<UCameraComponent>();
-	CheckMsg(PlayerCamera, TEXT("Player doesn't have camera component that is required for LineTraceComponent!"));
+	CheckMsg(PlayerCamera.IsValid(), TEXT("Player doesn't have camera component that is required for LineTraceComponent!"));
 }
 

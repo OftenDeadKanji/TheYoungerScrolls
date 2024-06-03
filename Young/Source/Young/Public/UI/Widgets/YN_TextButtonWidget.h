@@ -21,6 +21,7 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UButton> Button;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UTextBlock> Text;
 

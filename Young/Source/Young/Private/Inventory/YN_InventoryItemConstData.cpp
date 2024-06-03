@@ -5,9 +5,9 @@
 #include <Utilities/DebugMacros.h>
 #include "Inventory/YN_InventoryItem.h"
 
-const FText& UYN_InventoryItemConstData::GetName() const
+const FText& UYN_InventoryItemConstData::GetShortName() const
 {
-	return Name;
+	return ShortName;
 }
 
 const FText& UYN_InventoryItemConstData::GetDescription() const

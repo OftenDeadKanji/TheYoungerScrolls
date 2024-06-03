@@ -17,16 +17,18 @@ class YOUNG_API AYN_Character : public ACharacter
 public:
 	AYN_Character();
 
-	UYN_InventoryComponent* GetInventory();
+	UYN_InventoryComponent* GetInventory() const;
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void Authority_StatsUpdateCallback();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UYN_InventoryComponent> Inventory;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats", Replicated)
 	FYN_CharacterStats Stats;
 
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerStats")

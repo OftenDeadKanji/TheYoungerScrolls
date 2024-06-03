@@ -7,12 +7,7 @@
 #include "Core/Controllers/YN_PlayerController.h"
 #include "Inventory/YN_InventoryItem.h"
 #include "Utilities/DebugMacros.h"
-#include "Kismet/GameplayStatics.h"
-#include "Core/GameInstance/YN_GameInstance.h"
 #include "Inventory/YN_InventoryItemConstData.h"
-#include "Inventory/YN_InventoryItem.h"
-#include "Core/GameModes/YN_GameModeGame.h"
-#include "Core/GameStates/YN_GameStateGame.h"
 
 void AYN_InventoryItemPickup::OnUsePressed_Implementation(AYN_PlayerController* PlayerController)
 {
