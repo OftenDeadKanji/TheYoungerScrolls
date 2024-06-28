@@ -16,6 +16,8 @@
 #include "UI/YN_UserInterfaceSubsystem.h"
 #include "UI/Widgets/Player/YN_PlayerHUD.h"
 #include "Common/Interaction/YN_Interactable.h"
+#include "Common/Interaction/YN_InteractionAreaComponent.h"
+#include "Core/Characters/Components/YN_InteractionDetectorComponent.h"
 #include "UI/Widgets/Player/Inventory/YN_InventoryWidget.h"
 
 AYN_Player::AYN_Player()
@@ -29,7 +31,8 @@ AYN_Player::AYN_Player()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 	
-	LineTraceComponent = CreateDefaultSubobject<UYN_PlayerLineTraceComponent>(TEXT("LineTraceComponent"));
+	InteractionDetector = CreateDefaultSubobject<UYN_InteractionDetectorComponent>(TEXT("InteractionDetector"));
+	InteractionDetector->SetupAttachment(RootComponent);
 
 	SafeSpawnComponent = CreateDefaultSubobject<UYN_SafeSpawnComponent>(TEXT("SafeSpawnComponent"));
 	SafeSpawnComponent->SetupAttachment(RootComponent);
@@ -138,14 +141,12 @@ void AYN_Player::StopCrouch()
 
 void AYN_Player::InteractPrimary()
 {
-	Check(LineTraceComponent);
+	Check(InteractionDetector);
 
-	if (TScriptInterface<IYN_Interactable> Interactable = LineTraceComponent->GetHitInteractable())
+	UYN_InteractionAreaComponent* Interactable = InteractionDetector->GetFirstInteractableArea();
+	if(IsValid(Interactable))
 	{
-		if (IsValid(Interactable.GetObject()))
-		{
-			Interactable->Execute_OnUsePressed(Interactable.GetObject(), Cast<AYN_PlayerController>(GetController()));
-		}
+		Interactable->Interact(Cast<AYN_PlayerController>(GetController()));
 	}
 }
 

@@ -3,13 +3,32 @@
 
 #include "Inventory/YN_InventoryItemPickup.h"
 
+#include "Common/Interaction/YN_InteractionAreaComponent.h"
 #include "Core/Characters/YN_Character.h"
 #include "Core/Controllers/YN_PlayerController.h"
 #include "Inventory/YN_InventoryItem.h"
 #include "Utilities/DebugMacros.h"
 #include "Inventory/YN_InventoryItemConstData.h"
 
-void AYN_InventoryItemPickup::OnUsePressed_Implementation(AYN_PlayerController* PlayerController)
+AYN_InventoryItemPickup::AYN_InventoryItemPickup()
+{
+	InteractionArea = CreateDefaultSubobject<UYN_InteractionAreaComponent>(TEXT("InteractionArea"));
+	InteractionArea->SetupAttachment(RootComponent);
+}
+
+void AYN_InventoryItemPickup::BeginPlay()
+{
+	Super::BeginPlay();
+
+	InteractionArea->OnInteracted.BindUObject(this, &AYN_InventoryItemPickup::Interact);
+
+	if (Item == false)
+	{
+		InitItem(true);
+	}
+}
+
+void AYN_InventoryItemPickup::Interact(AYN_PlayerController* PlayerController)
 {
 	Check(Item);
 	Check(PlayerController);
@@ -23,16 +42,6 @@ void AYN_InventoryItemPickup::OnUsePressed_Implementation(AYN_PlayerController* 
 	Item->AddToInventory(Inventory);
 
 	Destroy();
-}
-
-void AYN_InventoryItemPickup::BeginPlay()
-{
-	Super::BeginPlay();
-
-	if (Item == false)
-	{
-		InitItem(true);
-	}
 }
 
 void AYN_InventoryItemPickup::TryToInitItem()

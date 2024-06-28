@@ -8,24 +8,30 @@
 #include "Inventory/YN_InventoryItem.h"
 #include "YN_InventoryItemPickup.generated.h"
 
+class UYN_InteractionAreaComponent;
 class UYN_InventoryItem;
 class UYN_InventoryItemConstData;
 
 UCLASS()
-class YOUNG_API AYN_InventoryItemPickup : public AStaticMeshActor, public IYN_Interactable
+class YOUNG_API AYN_InventoryItemPickup : public AStaticMeshActor
 {
 	GENERATED_BODY()
-	
+
 public:
-	void OnUsePressed_Implementation(AYN_PlayerController* PlayerController) override;
+	AYN_InventoryItemPickup();
 
 protected:
 	virtual void BeginPlay() override;
+
+	void Interact(AYN_PlayerController* InteractingPlayerController);
 
 	UFUNCTION(CallInEditor, Category = "Item Config")
 	virtual void TryToInitItem();
 
 	virtual void InitItem(bool bDestroyOnFail);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UYN_InteractionAreaComponent> InteractionArea;
 
 	UPROPERTY(EditInstanceOnly, Category = "Item Config")
 	FYN_InventoryItemData ItemData;

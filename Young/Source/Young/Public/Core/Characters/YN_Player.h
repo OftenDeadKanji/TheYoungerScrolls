@@ -6,6 +6,7 @@
 #include "Core/Characters/YN_Character.h"
 #include "YN_Player.generated.h"
 
+class UYN_InteractionDetectorComponent;
 class UCameraComponent;
 class USpringArmComponent;
 
@@ -58,7 +59,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<UCameraComponent> Camera;
 	UPROPERTY(EditAnywhere, Category = "Components")
-	TObjectPtr<UYN_PlayerLineTraceComponent> LineTraceComponent;
+	TObjectPtr<UYN_InteractionDetectorComponent> InteractionDetector;
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<UYN_SafeSpawnComponent> SafeSpawnComponent;
 

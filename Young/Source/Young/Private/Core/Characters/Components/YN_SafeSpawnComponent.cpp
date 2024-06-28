@@ -42,11 +42,7 @@ void UYN_SafeSpawnComponent::OnSafeAreaEndOverlap(UPrimitiveComponent* Overlappe
 		FString OverlappingInfo;
 		for (auto* Component : OverlappingComps)
 		{
-			FStringFormatOrderedArguments Args;
-			Args.Add(Component->GetOwner()->GetName());
-			Args.Add(Component->GetName());
-
-			OverlappingInfo += FString::Format(TEXT("\tActor = {0} Component = {1}\n"), Args);
+			OverlappingInfo += FString::Printf(TEXT("\tActor = %s Component = %s\n"), *Component->GetOwner()->GetName(), *Component->GetName());
 		}
 		UE_LOG(LogTemp, Display, TEXT("Still overlapping with: \n%s"), *OverlappingInfo);
 	}
