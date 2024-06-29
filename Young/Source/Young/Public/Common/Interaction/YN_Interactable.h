@@ -22,15 +22,17 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnUsePressed(AYN_PlayerController* PlayerController);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Authority_OnUsePressed(AYN_PlayerController* PlayerController);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnUseReleased(AYN_PlayerController* PlayerController);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Authority_OnUseReleased(AYN_PlayerController* PlayerController);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnPrimaryActionPressed(AYN_PlayerController* PlayerController);
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnPrimaryActionReleased(AYN_PlayerController* PlayerController);
+	bool RequiresInteractionByServer() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnSecondaryActionPressed(AYN_PlayerController* PlayerController);
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnSecondaryActionReleased(AYN_PlayerController* PlayerController);
+	float GetMaxFacingHalfAngle() const;
+	float GetMaxFacingHalfAngle_Implementation() const;
+
 };

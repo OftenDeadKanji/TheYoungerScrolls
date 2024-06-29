@@ -13,25 +13,22 @@ class UYN_InventoryItem;
 class UYN_InventoryItemConstData;
 
 UCLASS()
-class YOUNG_API AYN_InventoryItemPickup : public AStaticMeshActor
+class YOUNG_API AYN_InventoryItemPickup : public AStaticMeshActor, public IYN_Interactable
 {
 	GENERATED_BODY()
 
 public:
 	AYN_InventoryItemPickup();
 
+	virtual void Authority_OnUsePressed_Implementation(AYN_PlayerController* PlayerController) override;
+	virtual bool RequiresInteractionByServer_Implementation() const;
 protected:
 	virtual void BeginPlay() override;
-
-	void Interact(AYN_PlayerController* InteractingPlayerController);
 
 	UFUNCTION(CallInEditor, Category = "Item Config")
 	virtual void TryToInitItem();
 
 	virtual void InitItem(bool bDestroyOnFail);
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<UYN_InteractionAreaComponent> InteractionArea;
 
 	UPROPERTY(EditInstanceOnly, Category = "Item Config")
 	FYN_InventoryItemData ItemData;

@@ -16,7 +16,8 @@ class YOUNG_API UYN_InteractionDetectorComponent : public UCapsuleComponent
 
 public:
 	UFUNCTION(BlueprintCallable)
-	UYN_InteractionAreaComponent* GetFirstInteractableArea() const;
+	TScriptInterface<IYN_Interactable> GetFirstInteractable();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -25,5 +26,5 @@ protected:
 	UFUNCTION()
 	void OnAreaOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex);
 
-	TArray<UYN_InteractionAreaComponent*> OverlappedInteractableAreas;
+	TArray<TScriptInterface<IYN_Interactable>> OverlappedInteractables;
 };

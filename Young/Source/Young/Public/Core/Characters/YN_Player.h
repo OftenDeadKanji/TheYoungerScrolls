@@ -51,6 +51,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(Server, Reliable)
+	void Server_InteractPrimary(UObject* InteractableObject);
+	void Server_InteractPrimary_Implementation(UObject* InteractableObject);
+
 	UFUNCTION()
 	void OnSafeSpawn();
 

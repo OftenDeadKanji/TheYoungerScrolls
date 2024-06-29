@@ -70,6 +70,7 @@ void AYN_PlayerController::BeginPlay()
 		
 		AYN_Player* SpawnedPlayer = GetWorld()->SpawnActorDeferred<AYN_Player>(PlayerClass, SpawnTransform, this, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		Possess(SpawnedPlayer);
+		SpawnedPlayer->SetOwner(this);
 		PossessedPlayer = SpawnedPlayer;
 
 		UGameplayStatics::FinishSpawningActor(SpawnedPlayer, SpawnTransform, ESpawnActorScaleMethod::MultiplyWithRoot);

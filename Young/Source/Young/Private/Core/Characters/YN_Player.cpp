@@ -143,10 +143,17 @@ void AYN_Player::InteractPrimary()
 {
 	Check(InteractionDetector);
 
-	UYN_InteractionAreaComponent* Interactable = InteractionDetector->GetFirstInteractableArea();
-	if(IsValid(Interactable))
+	TScriptInterface<IYN_Interactable> Interactable = InteractionDetector->GetFirstInteractable();
+	if (Interactable)
 	{
-		Interactable->Interact(Cast<AYN_PlayerController>(GetController()));
+		if (IYN_Interactable::Execute_RequiresInteractionByServer(Interactable.GetObject()))
+		{
+			Server_InteractPrimary(Interactable.GetObject());
+		}
+		else
+		{
+			IYN_Interactable::Execute_OnUsePressed(Interactable.GetObject(), Cast<AYN_PlayerController>(GetController()));
+		}
 	}
 }
 
@@ -207,6 +214,15 @@ void AYN_Player::BeginPlay()
 		Check(InventoryWidget);
 
 		InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
+
+void AYN_Player::Server_InteractPrimary_Implementation(UObject* InteractableObject)
+{
+	TScriptInterface<IYN_Interactable> Interactable = InteractableObject;
+	if(Interactable)
+	{
+		IYN_Interactable::Execute_Authority_OnUsePressed(Interactable.GetObject(), Cast<AYN_PlayerController>(GetController()));
 	}
 }
 

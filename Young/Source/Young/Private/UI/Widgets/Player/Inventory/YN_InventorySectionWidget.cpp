@@ -18,6 +18,7 @@ void UYN_InventorySectionWidget::Init(const TArray<UYN_InventoryItem*>& Items)
 void UYN_InventorySectionWidget::Clear()
 {
 	ItemsGrid->Clear();
+	ItemsGrid->OnItemHovered.RemoveDynamic(this, &UYN_InventorySectionWidget::OnNewItemHovered);
 }
 
 void UYN_InventorySectionWidget::OnNewItemHovered(UYN_InventoryItem* Item)

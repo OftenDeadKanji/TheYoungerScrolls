@@ -12,23 +12,15 @@
 
 AYN_InventoryItemPickup::AYN_InventoryItemPickup()
 {
-	InteractionArea = CreateDefaultSubobject<UYN_InteractionAreaComponent>(TEXT("InteractionArea"));
-	InteractionArea->SetupAttachment(RootComponent);
+	bReplicates = true;
+
+	UStaticMeshComponent* Mesh = GetStaticMeshComponent();
+
+	Mesh->SetGenerateOverlapEvents(true);
+	Mesh->SetCollisionObjectType(ECC_WorldDynamic);
 }
 
-void AYN_InventoryItemPickup::BeginPlay()
-{
-	Super::BeginPlay();
-
-	InteractionArea->OnInteracted.BindUObject(this, &AYN_InventoryItemPickup::Interact);
-
-	if (Item == false)
-	{
-		InitItem(true);
-	}
-}
-
-void AYN_InventoryItemPickup::Interact(AYN_PlayerController* PlayerController)
+void AYN_InventoryItemPickup::Authority_OnUsePressed_Implementation(AYN_PlayerController* PlayerController)
 {
 	Check(Item);
 	Check(PlayerController);
@@ -42,6 +34,21 @@ void AYN_InventoryItemPickup::Interact(AYN_PlayerController* PlayerController)
 	Item->AddToInventory(Inventory);
 
 	Destroy();
+}
+
+bool AYN_InventoryItemPickup::RequiresInteractionByServer_Implementation() const
+{
+	return true;
+}
+
+void AYN_InventoryItemPickup::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (Item == false)
+	{
+		InitItem(true);
+	}
 }
 
 void AYN_InventoryItemPickup::TryToInitItem()

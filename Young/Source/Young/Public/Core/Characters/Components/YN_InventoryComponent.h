@@ -29,11 +29,18 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere)
+	UFUNCTION(Server, Reliable)
+	void Server_AddWeapon(UYN_Weapon* Weapon);
+	void Server_AddWeapon_Implementation(UYN_Weapon* Weapon);
+	void Authority_AddWeapon(UYN_Weapon* Weapon);
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UPROPERTY(VisibleAnywhere, Replicated)
 	TArray<UYN_InventoryItem*> Items;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Replicated)
 	TArray<UYN_InventoryItem*> ItemsWeapons;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Replicated)
 	TArray<UYN_Weapon*> Weapons;
 };

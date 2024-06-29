@@ -3,11 +3,12 @@
 
 #include "Core/Characters/Components/YN_InteractionDetectorComponent.h"
 
+#include "Common/Interaction/YN_Interactable.h"
 #include "Common/Interaction/YN_InteractionAreaComponent.h"
 
-UYN_InteractionAreaComponent* UYN_InteractionDetectorComponent::GetFirstInteractableArea() const
+TScriptInterface<IYN_Interactable> UYN_InteractionDetectorComponent::GetFirstInteractable()
 {
-	return OverlappedInteractableAreas.IsEmpty() ? nullptr : OverlappedInteractableAreas[0];
+	return OverlappedInteractables.IsEmpty() ? TScriptInterface<IYN_Interactable>() : OverlappedInteractables[0];
 }
 
 void UYN_InteractionDetectorComponent::BeginPlay()
@@ -20,29 +21,43 @@ void UYN_InteractionDetectorComponent::BeginPlay()
 
 void UYN_InteractionDetectorComponent::OnAreaOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(IsValid(OtherComponent))
+	TScriptInterface<IYN_Interactable> Interactable;
+	if(IsValid(OtherActor) && OtherActor->Implements<UYN_Interactable>())
 	{
-		if(UYN_InteractionAreaComponent* InteractionArea = Cast<UYN_InteractionAreaComponent>(OtherComponent))
-		{
-			OverlappedInteractableAreas.Add(InteractionArea);
-			GEngine->AddOnScreenDebugMessage(0, 2.0f, FColor::Yellow, FString::Printf(TEXT("Overlapped interactable component %s"), *OtherComponent->GetName()));
-		}
+		Interactable = OtherActor;
+	}
+	else if(IsValid(OtherComponent) && OtherComponent->Implements<UYN_Interactable>())
+	{
+		Interactable = OtherComponent;
+	}
+
+	if (Interactable)
+	{
+		OverlappedInteractables.Add(Interactable);
+		GEngine->AddOnScreenDebugMessage(0, 2.0f, FColor::Yellow, FString::Printf(TEXT("Overlapped interactable %s"), *Interactable.GetObject()->GetName()));
 	}
 }
 
 void UYN_InteractionDetectorComponent::OnAreaOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex)
 {
-	if(IsValid(OtherComponent))
+	TScriptInterface<IYN_Interactable> Interactable;
+	if(IsValid(OtherActor) && OtherActor->Implements<UYN_Interactable>())
 	{
-		if (UYN_InteractionAreaComponent* InteractionArea = Cast<UYN_InteractionAreaComponent>(OtherComponent))
+		Interactable = OtherActor;
+	}
+	else if(IsValid(OtherComponent) && OtherComponent->Implements<UYN_Interactable>())
+	{
+		Interactable = OtherComponent;
+	}
+
+	if (Interactable)
+	{
+		for (int i = OverlappedInteractables.Num() - 1; i >= 0; i--)
 		{
-			for(int i = OverlappedInteractableAreas.Num() - 1; i >= 0; i--)
+			if (OverlappedInteractables[i].GetObject() == Interactable.GetObject())
 			{
-				if (OverlappedInteractableAreas[i] == InteractionArea)
-				{
-					OverlappedInteractableAreas.RemoveAt(i);
-					GEngine->AddOnScreenDebugMessage(0, 2.0f, FColor::Yellow, FString::Printf(TEXT("Ended Overlap with interactable component %s"), *OtherComponent->GetName()));
-				}
+				OverlappedInteractables.RemoveAt(i);
+				GEngine->AddOnScreenDebugMessage(0, 2.0f, FColor::Yellow, FString::Printf(TEXT("Ended Overlap with interactable %s"), *Interactable.GetObject()->GetName()));
 			}
 		}
 	}
