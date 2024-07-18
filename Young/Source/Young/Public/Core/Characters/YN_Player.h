@@ -32,7 +32,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LookAround(const FVector2D& Direction);
 	
-	void Jump() override;
+	UFUNCTION(BlueprintCallable)
+	void JumpEx();
 	
 	UFUNCTION(BlueprintCallable)
 	void StartCrouch();
@@ -66,6 +67,15 @@ protected:
 	TObjectPtr<UYN_InteractionDetectorComponent> InteractionDetector;
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<UYN_SafeSpawnComponent> SafeSpawnComponent;
+
+	//FVector TargetMovementDirection;
+	//FVector PreviousMovementDirection;
+	FVector CurrentMovementDirection;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Settings")
+	float CharacterMovementChangeSpeed = 10.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Settings")
+	float MeshRotationSpeed = 10.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Settings")
 	FVector2D LookUpRange;

@@ -40,6 +40,7 @@ AYN_Player::AYN_Player()
 	bUseControllerRotationYaw = false;
 	
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	SetReplicatingMovement(true);
 }
 
@@ -64,22 +65,23 @@ void AYN_Player::Move(const FVector2D& Direction)
 
 	if (Direction.Size() > 0.0f)
 	{
+		UWorld* World = GetWorld();
+		Check(World);
+
+		GetCharacterMovement()->AddInputVector(CurrentMovementDirection);
+
 		FVector Forward = Camera->GetForwardVector();
-		Forward.Z = 0.0;
-		Forward.Normalize();
-
 		FVector Right = Camera->GetRightVector();
-		Right.Z = 0.0;
-		Right.Normalize();
 
-		FVector Movement(0.0f, 0.0f, 0.0f);
-		Movement += Forward * Direction.Y;
-		Movement += Right * Direction.X;
+		FVector TargetMovement(0.0f, 0.0f, 0.0f);
+		TargetMovement += Forward * Direction.Y;
+		TargetMovement += Right * Direction.X;
 
-		Movement.Normalize();
-		GetCharacterMovement()->AddInputVector(Movement);
+		TargetMovement.Z = 0.0f;
+		TargetMovement.Normalize();
 
-		SetActorRotation(Movement.Rotation());
+		FVector MovementChangeDirection = TargetMovement - CurrentMovementDirection;
+		CurrentMovementDirection += MovementChangeDirection * FMath::Min(1.0f, World->GetDeltaSeconds() * CharacterMovementChangeSpeed);
 	}
 }
 
@@ -109,7 +111,7 @@ void AYN_Player::LookAround(const FVector2D& Direction)
 	}
 }
 
-void AYN_Player::Jump()
+void AYN_Player::JumpEx()
 {
 	if(UISubsystem->GetTopWidget()->IsBlockingMovementAndCameraInput())
 	{
@@ -191,6 +193,8 @@ void AYN_Player::BeginPlay()
 
 	SafeSpawnComponent->OnSafeSpawned.BindDynamic(this, &AYN_Player::OnSafeSpawn);
 	SafeSpawnComponent->StartSafeSpawn(GetCapsuleComponent());
+
+	CurrentMovementDirection = GetCapsuleComponent()->GetForwardVector();
 
 	if (IsLocallyControlled())
 	{

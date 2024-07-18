@@ -17,6 +17,8 @@ class YOUNG_API AYN_PlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	AYN_PlayerController();
+
 	void SetupInputComponent() override;
 
 protected:

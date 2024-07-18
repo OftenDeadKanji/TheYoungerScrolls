@@ -3,21 +3,24 @@
 
 #include "Core/Controllers/YN_PlayerController.h"
 
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
-#include "Kismet/GameplayStatics.h"
-#include "Net/UnrealNetwork.h"
-
 #include "Common/YN_SpawnPoint.h"
 #include "Core/Characters/YN_Player.h"
 #include "Utilities/DebugMacros.h"
 #include "Utilities/YN_InputMappingContext.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
+
+AYN_PlayerController::AYN_PlayerController()
+{
+	bReplicates = true;
+}
+
 void AYN_PlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-
-	bReplicates = true;
 
 	SafeCheckMsgNoRet(PlayerInputMapping, "PlayerInputMapping is not set in %s", *GetName());
 
@@ -99,7 +102,7 @@ void AYN_PlayerController::CallJump(const FInputActionValue& Value)
 {
 	if (PossessedPlayer.IsValid())
 	{
-		PossessedPlayer->Jump();
+		PossessedPlayer->JumpEx();
 	}
 }
 

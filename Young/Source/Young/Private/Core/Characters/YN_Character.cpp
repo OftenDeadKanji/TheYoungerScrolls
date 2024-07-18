@@ -1,12 +1,11 @@
 // Copyright (c) 2024, Mateusz Chłopek. All rights reserved.
 
-
 #include "Core/Characters/YN_Character.h"
-
-#include "Net/UnrealNetwork.h"
 
 #include "Core/Characters/Components/YN_InventoryComponent.h"
 #include "Utilities/DebugMacros.h"
+
+#include "Net/UnrealNetwork.h"
 
 AYN_Character::AYN_Character()
 {
