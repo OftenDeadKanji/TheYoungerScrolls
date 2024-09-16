@@ -8,9 +8,8 @@ public class YoungEditorTarget : TargetRules
 	public YoungEditorTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V4;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
-		//bValidateFormatStrings = true;
 		ExtraModuleNames.Add("Young");
 	}
 }
