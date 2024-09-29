@@ -3,7 +3,7 @@
 
 #include "Inventory/Weapon/Weapon.h"
 
-#include "Core/General/Characters/Components/InventoryComponent.h"
+#include "Core/Characters/Components/InventoryComponent.h"
 
 void UWeapon::AddSelfToInventory(UInventoryComponent* Inventory)
 {

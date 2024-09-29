@@ -14,6 +14,9 @@ class YOUNG_API UInventoryItem : public UObject
 	GENERATED_BODY()
 
 public:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual bool IsSupportedForNetworking() const override;
+
 	UFUNCTION(BlueprintCallable)
 	virtual void AddSelfToInventory(UInventoryComponent* Inventory);
 
@@ -26,9 +29,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddCount(int32 InCount);
 protected:
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated)
 	UInventoryItemTypeData* Data;
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated)
 	int32 Count;
 };

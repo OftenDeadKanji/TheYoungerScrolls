@@ -3,9 +3,9 @@
 
 #include "Inventory/InventoryItemPickup.h"
 
-#include "Core/General/Characters/CharacterEx.h"
-#include "Core/General/Characters/Components/InventoryComponent.h"
-#include "Core/Player/Controllers/MainPlayerController.h"
+#include "Core/Characters/CharacterEx.h"
+#include "Core/Characters/Components/InventoryComponent.h"
+#include "Core//Controllers/MainPlayerController.h"
 #include "Inventory/InventoryItem.h"
 
 AInventoryItemPickup::AInventoryItemPickup()

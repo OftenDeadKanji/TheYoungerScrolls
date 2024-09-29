@@ -3,6 +3,22 @@
 
 #include "Inventory/InventoryItem.h"
 
+#include "Net/UnrealNetwork.h"
+
+
+void UInventoryItem::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	UObject::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UInventoryItem, Data);
+	DOREPLIFETIME(UInventoryItem, Count);
+}
+
+bool UInventoryItem::IsSupportedForNetworking() const
+{
+	return true;
+}
+
 void UInventoryItem::AddSelfToInventory(UInventoryComponent* Inventory)
 {}
 

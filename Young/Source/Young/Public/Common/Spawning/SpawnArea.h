@@ -15,8 +15,10 @@ class YOUNG_API ASpawnArea : public AActor
 
 public:
 	ASpawnArea();
+	virtual void BeginPlay() override;
 
-	FVector GetRandomPointInArea() const;
+	UFUNCTION(BlueprintCallable)
+	FVector GetRandomSpawnLocation(float PawnHalfHeight, bool bTryToAdjustLocation = false) const;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UBoxComponent> Area;
