@@ -10,8 +10,8 @@
 #include "Camera/CameraComponent.h"
 #include "Common/Interactable.h"
 #include "Core/Characters/Player/Components/InteractableDetectorComponent.h"
-#include "Core/Characters/Player/Components/MainPlayerUIComponent.h"
 #include "Core/Controllers/MainPlayerController.h"
+#include "Core/HUD/MainPlayerHUD.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -32,8 +32,6 @@ AMainPlayer::AMainPlayer()
 	InteractableDetector = CreateDefaultSubobject<UInteractableDetectorComponent>(TEXT("InteractableDetector"));
 	InteractableDetector->SetupAttachment(RootComponent);
 
-	UIComponent = CreateDefaultSubobject<UMainPlayerUIComponent>(TEXT("UIComponent"));
-
 	bUseControllerRotationYaw = false;
 
 	Movement = GetCharacterMovement();
@@ -52,9 +50,9 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		return;
 	}
 
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	APlayerController* PlayerController = GetController<APlayerController>();
 
-	ULocalPlayer* LocalPlayer = Cast<ULocalPlayer>(PlayerController->GetLocalPlayer());
+	ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
 
 	UEnhancedInputLocalPlayerSubsystem* InputSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 
@@ -71,7 +69,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	EnhancedInputComponent->BindAction(MainPlayerInputMappingContext->GetAction(TEXT("IA_MainPlayer_Use")), ETriggerEvent::Started, this, &AMainPlayer::Use);
 
-	EnhancedInputComponent->BindAction(MainPlayerInputMappingContext->GetAction(TEXT("IA_MainPlayer_ToggleInventory")), ETriggerEvent::Started, UIComponent.Get(), &UMainPlayerUIComponent::ToggleInventory);
+	EnhancedInputComponent->BindAction(MainPlayerInputMappingContext->GetAction(TEXT("IA_MainPlayer_ToggleInventory")), ETriggerEvent::Started, PlayerController->GetHUD<AMainPlayerHUD>(), &AMainPlayerHUD::ToggleInventory);
 }
 
 void AMainPlayer::Tick(float DeltaSeconds)
@@ -83,12 +81,15 @@ void AMainPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	APlayerController* PlayerController = GetController<APlayerController>();
+	HUD = PlayerController->GetHUD<AMainPlayerHUD>();
+
 	CurrentMovementDirection = GetCapsuleComponent()->GetForwardVector();
 }
 
 void AMainPlayer::Move(const FInputActionValue& Value)
 {
-	if(UIComponent->IsAnyWidgetBlockingPawnInput())
+	if(HUD->IsAnyWidgetBlockingPawnInput())
 	{
 		return;
 	}
@@ -116,7 +117,7 @@ void AMainPlayer::Move(const FInputActionValue& Value)
 
 void AMainPlayer::LookAround(const FInputActionValue& Value)
 {
-	if(UIComponent->IsAnyWidgetBlockingPawnInput())
+	if(HUD->IsAnyWidgetBlockingPawnInput())
 	{
 		return;
 	}
@@ -141,7 +142,7 @@ void AMainPlayer::LookAround(const FInputActionValue& Value)
 
 void AMainPlayer::Use(const FInputActionValue& Value)
 {
-	if(UIComponent->IsAnyWidgetBlockingPawnInput())
+	if(HUD->IsAnyWidgetBlockingPawnInput())
 	{
 		return;
 	}

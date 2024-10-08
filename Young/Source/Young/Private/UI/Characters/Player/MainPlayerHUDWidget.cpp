@@ -31,6 +31,9 @@ void UMainPlayerHUDWidget::ToggleInventoryWidget(UInventoryComponent* Inventory)
 
 		GameBlur->SetVisibility(ESlateVisibility::Visible);
 	}
+
+	UpdateCachedChildrenData({ CharacterStats, InventoryWidget });
+	UpdateInputMode();
 }
 
 void UMainPlayerHUDWidget::UpdateCharacterStats(const FCharacterStats& Stats)
@@ -38,21 +41,4 @@ void UMainPlayerHUDWidget::UpdateCharacterStats(const FCharacterStats& Stats)
 	check(IsValid(GameBlur));
 
 	CharacterStats->Update(Stats);
-}
-
-bool UMainPlayerHUDWidget::IsAnyWidgetBlockingPawnInput() const
-{
-	bool bBlock = false;
-
-	if(IsValid(CharacterStats))
-	{
-		bBlock |= CharacterStats->IsBlockingPawnInput();
-	}
-
-	if(IsValid(InventoryWidget))
-	{
-		bBlock |= InventoryWidget->IsBlockingPawnInput();
-	}
-
-	return bBlock;
 }

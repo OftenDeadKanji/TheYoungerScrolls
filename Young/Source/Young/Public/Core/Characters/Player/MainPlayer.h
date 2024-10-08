@@ -6,6 +6,7 @@
 #include "Core/Characters/CharacterEx.h"
 #include "MainPlayer.generated.h"
 
+class AMainPlayerHUD;
 class UMainPlayerUIComponent;
 class UInteractableDetectorComponent;
 class UInputMappingContextEx;
@@ -46,9 +47,8 @@ protected:
 	TObjectPtr<UCameraComponent> Camera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UInteractableDetectorComponent> InteractableDetector;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<UMainPlayerUIComponent> UIComponent;
 
+	TWeakObjectPtr<AMainPlayerHUD> HUD;
 	TWeakObjectPtr<UCharacterMovementComponent> Movement;
 
 	FVector CurrentMovementDirection;

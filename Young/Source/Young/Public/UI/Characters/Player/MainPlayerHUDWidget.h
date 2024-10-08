@@ -23,8 +23,6 @@ public:
 	void ToggleInventoryWidget(UInventoryComponent* Inventory = nullptr);
 
 	void UpdateCharacterStats(const FCharacterStats& Stats);
-
-	bool IsAnyWidgetBlockingPawnInput() const;
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCharacterStatsWidget> CharacterStats;

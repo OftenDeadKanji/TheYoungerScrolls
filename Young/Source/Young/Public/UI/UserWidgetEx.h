@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "UserWidgetEx.generated.h"
 
+enum class EPlayerInputMode : uint8;
+
 UCLASS()
 class YOUNG_API UUserWidgetEx : public UUserWidget
 {
@@ -15,7 +17,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsBlockingPawnInput() const;
 
+	UFUNCTION(BlueprintCallable)
+	EPlayerInputMode GetRequiredInputMode() const;
 protected:
-	UPROPERTY(EditAnywhere)
+	void UpdateCachedChildrenData(const TArray<const UUserWidgetEx*>& Children);
+	void UpdateInputMode();
+	
+
+	UPROPERTY(EditAnywhere, Category = "Config")
 	bool bBlockPawnInput = false;
+	bool bChildrenBlockPawnInput = false;
+
+	UPROPERTY(EditAnywhere, Category = "Config")
+	EPlayerInputMode RequiredInputMode;
+	EPlayerInputMode ChildrenRequiredInputMode;
 };
