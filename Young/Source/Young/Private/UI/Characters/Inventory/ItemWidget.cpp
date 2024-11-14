@@ -5,13 +5,13 @@
 
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
-#include "Inventory/InventoryItem.h"
+#include "Inventory/InventoryItemInstanceData.h"
 
 void UItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
 
-	UInventoryItem* InventoryItem = Cast<UInventoryItem>(ListItemObject);
+	UInventoryItemInstanceData* InventoryItem = Cast<UInventoryItemInstanceData>(ListItemObject);
 	if(IsValid(InventoryItem) == false)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s - ListItemObject (%s) is not a Inventory Item!"), *GetName(), *ListItemObject->GetName());

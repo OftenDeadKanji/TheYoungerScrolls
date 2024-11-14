@@ -3,11 +3,28 @@
 
 #include "Inventory/Weapon/Weapon.h"
 
-#include "Core/Characters/Components/InventoryComponent.h"
+#include "Inventory/Weapon/WeaponInstanceData.h"
+#include "Inventory/Weapon/WeaponTypeData.h"
 
-void UWeapon::AddSelfToInventory(UInventoryComponent* Inventory)
+AWeapon::AWeapon(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
-	Super::AddSelfToInventory(Inventory);
+	Mesh = CreateDefaultSubobject<UMeshComponent>(TEXT("Mesh"));
+	SetRootComponent(Mesh);
 
-	Inventory->AddWeapon(this);
+	if (IsValid(Mesh))
+	{
+		Mesh->SetCollisionProfileName(TEXT("Weapon"));
+	}
+}
+
+void AWeapon::Init(UWeaponInstanceData* Data)
+{
+	WeaponInstanceData = Data;
+
+	if(WeaponInstanceData.IsValid())
+	{
+		WeaponTypeData = Cast<UWeaponTypeData>(WeaponInstanceData->GetItemTypeData());
+	}
+
 }

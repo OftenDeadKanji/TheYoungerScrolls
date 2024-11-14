@@ -13,9 +13,9 @@ const FText& UInventoryItemTypeData::GetDescription() const
 	return Description;
 }
 
-UStaticMesh* UInventoryItemTypeData::GetStaticMesh() const
+UStaticMesh* UInventoryItemTypeData::GetPickUpMesh() const
 {
-	return StaticMesh;
+	return PickUpMesh;
 }
 
 UTexture2D* UInventoryItemTypeData::GetIcon() const
@@ -28,7 +28,7 @@ bool UInventoryItemTypeData::IsStackable() const
 	return bStackable;
 }
 
-UInventoryItem* UInventoryItemTypeData::CreateItem(UObject* Outer)
+UInventoryItemInstanceData* UInventoryItemTypeData::CreateItem(UObject* Outer)
 {
 	return nullptr;
 }

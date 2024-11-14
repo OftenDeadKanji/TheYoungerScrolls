@@ -3,13 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InventoryItemData.h"
 #include "InventoryItemTypeData.h"
 #include "Common/Interactable.h"
 #include "Engine/StaticMeshActor.h"
 #include "InventoryItemPickup.generated.h"
 
-class UInventoryItem;
+class UInventoryItemInstanceData;
 
 UCLASS()
 class YOUNG_API AInventoryItemPickup : public AStaticMeshActor, public IInteractable
@@ -26,15 +25,12 @@ public:
 #pragma endregion
 
 protected:
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite)
+	UInventoryItemInstanceData* Item;
 
-	UFUNCTION(CallInEditor, Category = "Item Config")
-	virtual void TryToInitItem();
-	virtual void InitItem(bool bDestroyOnFail);
+private:
 
-	UPROPERTY(EditInstanceOnly, Category = "Item Config")
-	FInventoryItemData ItemData;
-
-	UPROPERTY()
-	UInventoryItem* Item;
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
 };

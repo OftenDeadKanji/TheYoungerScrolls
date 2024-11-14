@@ -3,7 +3,7 @@
 
 #include "Core/Characters/Components/InventoryComponent.h"
 
-#include "Inventory/Weapon/Weapon.h"
+#include "Inventory/Weapon/WeaponInstanceData.h"
 #include "Net/UnrealNetwork.h"
 
 UInventoryComponent::UInventoryComponent()
@@ -14,12 +14,32 @@ UInventoryComponent::UInventoryComponent()
 	bReplicateUsingRegisteredSubObjectList = true;
 }
 
-const TArray<UInventoryItem*>& UInventoryComponent::GetAllItems() const
+void UInventoryComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (GetNetMode() != NM_Client)
+	{
+		InitArrays();
+	}
+}
+
+void UInventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION(UInventoryComponent, Items, COND_OwnerOnly);
+
+	DOREPLIFETIME_CONDITION(UInventoryComponent, Weapons, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(UInventoryComponent, ItemsWeapons, COND_OwnerOnly);
+}
+
+const TArray<UInventoryItemInstanceData*>& UInventoryComponent::GetAllItems() const
 {
 	return Items;
 }
 
-void UInventoryComponent::AddWeapon(UWeapon* Weapon)
+void UInventoryComponent::AddWeapon(UWeaponInstanceData* Weapon)
 {
 	if(IsValid(Weapon) == false)
 	{
@@ -36,22 +56,37 @@ void UInventoryComponent::AddWeapon(UWeapon* Weapon)
 	}
 }
 
-const TArray<UWeapon*>& UInventoryComponent::GetWeapons() const
+const TArray<UWeaponInstanceData*>& UInventoryComponent::GetWeapons() const
 {
 	return Weapons;
 }
 
-const TArray<UInventoryItem*>& UInventoryComponent::GetWeaponsAsItems() const
+const TArray<UInventoryItemInstanceData*>& UInventoryComponent::GetWeaponsAsItems() const
 {
 	return ItemsWeapons;
 }
 
-void UInventoryComponent::Server_AddWeapon_Implementation(UWeapon* Weapon)
+void UInventoryComponent::InitArrays()
+{
+	int32 WeaponsCount = Weapons.Num();
+	ItemsWeapons.Empty(WeaponsCount);
+
+	int32 ItemsCount = WeaponsCount;
+	Items.Empty(ItemsCount);
+
+	for (UWeaponInstanceData* Weapon : Weapons)
+	{
+		ItemsWeapons.Add(Weapon);
+		Items.Add(Weapon);
+	}
+}
+
+void UInventoryComponent::Server_AddWeapon_Implementation(UWeaponInstanceData* Weapon)
 {
 	Authority_AddWeapon(Weapon);
 }
 
-void UInventoryComponent::Authority_AddWeapon(UWeapon* Weapon)
+void UInventoryComponent::Authority_AddWeapon(UWeaponInstanceData* Weapon)
 {
 	AddReplicatedSubObject(Weapon);
 
@@ -71,14 +106,4 @@ void UInventoryComponent::Authority_AddWeapon(UWeapon* Weapon)
 	Weapons.Add(Weapon);
 	ItemsWeapons.Add(Weapon);
 	Items.Add(Weapon);
-}
-
-void UInventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME_CONDITION(UInventoryComponent, Items, COND_OwnerOnly);
-
-	DOREPLIFETIME_CONDITION(UInventoryComponent, Weapons, COND_OwnerOnly);
-	DOREPLIFETIME_CONDITION(UInventoryComponent, ItemsWeapons, COND_OwnerOnly);
 }

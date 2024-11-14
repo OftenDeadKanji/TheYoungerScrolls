@@ -7,36 +7,39 @@
 #include "InventoryComponent.generated.h"
 
 
-class UInventoryItem;
-class UWeapon;
+class UInventoryItemInstanceData;
+class UWeaponInstanceData;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class YOUNG_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UInventoryComponent();
 
+	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	const TArray<UInventoryItem*>& GetAllItems() const;
+	const TArray<UInventoryItemInstanceData*>& GetAllItems() const;
 
-	void AddWeapon(UWeapon* Weapon);
-	const TArray<UWeapon*>& GetWeapons() const;
-	const TArray<UInventoryItem*>& GetWeaponsAsItems() const;
+	void AddWeapon(UWeaponInstanceData* Weapon);
+	const TArray<UWeaponInstanceData*>& GetWeapons() const;
+	const TArray<UInventoryItemInstanceData*>& GetWeaponsAsItems() const;
 
 protected:
+	void InitArrays();
+
 	UFUNCTION(Server, Reliable)
-	void Server_AddWeapon(UWeapon* Weapon);
-	void Authority_AddWeapon(UWeapon* Weapon);
+	void Server_AddWeapon(UWeaponInstanceData* Weapon);
+	void Authority_AddWeapon(UWeaponInstanceData* Weapon);
 
 	UPROPERTY(VisibleInstanceOnly, Replicated)
-	TArray<UInventoryItem*> Items;
+	TArray<UInventoryItemInstanceData*> Items;
 
-	UPROPERTY(VisibleInstanceOnly, Replicated)
-	TArray<UWeapon*> Weapons;
-	UPROPERTY(VisibleInstanceOnly, Replicated)
-	TArray<UInventoryItem*> ItemsWeapons;
+	UPROPERTY(VisibleInstanceOnly, Replicated, Instanced)
+	TArray<UWeaponInstanceData*> Weapons;
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, Replicated)
+	TArray<UInventoryItemInstanceData*> ItemsWeapons;
 
 };

@@ -8,7 +8,7 @@
 
 class UTextBlock;
 class UImage;
-class UInventoryItem;
+class UInventoryItemInstanceData;
 
 UCLASS()
 class YOUNG_API UItemInfoWidget : public UUserWidgetEx
@@ -16,7 +16,7 @@ class YOUNG_API UItemInfoWidget : public UUserWidgetEx
 	GENERATED_BODY()
 
 public:
-	void SetNewItem(UInventoryItem* Item);
+	void SetNewItem(UInventoryItemInstanceData* Item);
 
 protected:
 	UPROPERTY(meta = (BindWidget))

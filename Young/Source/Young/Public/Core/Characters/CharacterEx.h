@@ -7,6 +7,8 @@
 #include "GameFramework/Character.h"
 #include "CharacterEx.generated.h"
 
+class AWeapon;
+class UWeaponInstanceData;
 class UInventoryComponent;
 
 UCLASS()
@@ -21,12 +23,17 @@ public:
 	virtual ELifetimeCondition AllowActorComponentToReplicate(const UActorComponent* ComponentToReplicate) const override;
 
 	const FCharacterStats& GetCharacterStats() const;
+
+	UFUNCTION(BlueprintCallable)
+	void EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
 protected:
 	virtual void BeginPlay() override;
 	virtual void Authority_StatsUpdateCallback();
 
+	UFUNCTION(Server, Reliable)
+	void Server_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
+	void Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
 
-protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UInventoryComponent> Inventory;
 
@@ -36,4 +43,7 @@ protected:
 	float StatsUpdateRate = 0.3f;
 
 	FTimerHandle StatsUpdateTimer;
+
+	UPROPERTY(VisibleAnywhere)
+	TWeakObjectPtr<AWeapon> EquippedWeaponRightHand;
 };

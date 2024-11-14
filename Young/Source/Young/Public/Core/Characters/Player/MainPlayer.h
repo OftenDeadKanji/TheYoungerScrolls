@@ -52,13 +52,13 @@ protected:
 	TWeakObjectPtr<UCharacterMovementComponent> Movement;
 
 	FVector CurrentMovementDirection;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config|Movement")
 	float CharacterMovementChangeSpeed = 1.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config|Movement")
 	float LookAroundSpeed = 1.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config|Movement")
 	FVector2D LookUpRange;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Input")
 	TObjectPtr<UInputMappingContextEx> MainPlayerInputMappingContext;
 };

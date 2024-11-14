@@ -22,7 +22,6 @@ public:
 protected:
 	void UpdateCachedChildrenData(const TArray<const UUserWidgetEx*>& Children);
 	void UpdateInputMode();
-	
 
 	UPROPERTY(EditAnywhere, Category = "Config")
 	bool bBlockPawnInput = false;

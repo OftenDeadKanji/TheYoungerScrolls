@@ -4,6 +4,9 @@
 #include "Core/Characters/CharacterEx.h"
 
 #include "Core/Characters/Components/InventoryComponent.h"
+#include "Inventory/Weapon/Weapon.h"
+#include "Inventory/Weapon/WeaponInstanceData.h"
+#include "Inventory/Weapon/WeaponTypeData.h"
 #include "Net/UnrealNetwork.h"
 
 ACharacterEx::ACharacterEx()
@@ -31,6 +34,18 @@ const FCharacterStats& ACharacterEx::GetCharacterStats() const
 	return Stats;
 }
 
+void ACharacterEx::EquipWeapon_RightHand(UWeaponInstanceData* WeaponData)
+{
+	if(HasAuthority())
+	{
+		Authority_EquipWeapon_RightHand(WeaponData);
+	}
+	else
+	{
+		Server_EquipWeapon_RightHand(WeaponData);
+	}
+}
+
 void ACharacterEx::BeginPlay()
 {
 	Super::BeginPlay();
@@ -46,4 +61,29 @@ void ACharacterEx::Authority_StatsUpdateCallback()
 	Stats.CurrentHealth = FMath::Clamp(Stats.CurrentHealth + Stats.BaseHealthRegeneration * StatsUpdateRate, 0.0f, Stats.MaxHealth);
 	Stats.CurrentStamina = FMath::Clamp(Stats.CurrentStamina + Stats.BaseStaminaRegeneration * StatsUpdateRate, 0.0f, Stats.MaxStamina);
 	Stats.CurrentMana = FMath::Clamp(Stats.CurrentMana + Stats.BaseManaRegeneration * StatsUpdateRate, 0.0f, Stats.MaxMana);
+}
+
+void ACharacterEx::Server_EquipWeapon_RightHand_Implementation(UWeaponInstanceData* WeaponData)
+{
+	Authority_EquipWeapon_RightHand(WeaponData);
+}
+
+void ACharacterEx::Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData)
+{
+	UWorld* World = GetWorld();
+
+	FTransform SpawnTransform = GetActorTransform();
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = GetOwner();
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	UWeaponTypeData* WeaponTypeData = Cast<UWeaponTypeData>(WeaponData->GetItemTypeData());
+	AWeapon* Weapon = World->SpawnActor<AWeapon>(WeaponTypeData->GetActorClass(), SpawnTransform, SpawnParams);
+
+	Weapon->Init(WeaponData);
+
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponTypeData->GetMeshSocketSheathed());
+
+	EquippedWeaponRightHand = Weapon;
 }

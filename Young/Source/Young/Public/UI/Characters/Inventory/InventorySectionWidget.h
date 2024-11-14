@@ -9,7 +9,9 @@
 class UTileView;
 class UItemInfoWidget;
 class UItemsGridWidget;
-class UInventoryItem;
+class UInventoryItemInstanceData;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemClicked, UInventoryItemInstanceData*, Item);
 
 UCLASS()
 class YOUNG_API UInventorySectionWidget : public UUserWidgetEx
@@ -17,12 +19,17 @@ class YOUNG_API UInventorySectionWidget : public UUserWidgetEx
 	GENERATED_BODY()
 
 public:
-	void Init(const TArray<UInventoryItem*>& Items);
+	void Init(const TArray<UInventoryItemInstanceData*>& Items);
 	void Clear();
+
+	FOnItemClicked OnItemClickedEvent;
 
 protected:
 	UFUNCTION()
-	void OnNewItemHovered(UInventoryItem* Item);
+	void OnItemHoverChange(UInventoryItemInstanceData* Item, bool bHovered);
+
+	UFUNCTION()
+	void OnItemClicked(UInventoryItemInstanceData* Item);
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UItemsGridWidget> ItemsGrid;

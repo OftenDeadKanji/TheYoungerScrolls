@@ -3,15 +3,28 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Inventory/InventoryItem.h"
+#include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
-UCLASS()
-class YOUNG_API UWeapon : public UInventoryItem
+class UWeaponTypeData;
+class UWeaponInstanceData;
+
+UCLASS(Abstract, NotBlueprintable)
+class YOUNG_API AWeapon : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	virtual void AddSelfToInventory(UInventoryComponent* Inventory) override;
+	AWeapon(const FObjectInitializer& ObjectInitializer);
+
+	virtual void Init(UWeaponInstanceData* Data);
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UMeshComponent> Mesh;
+
+	UPROPERTY(VisibleInstanceOnly, Category = "Young")
+	TWeakObjectPtr<UWeaponInstanceData> WeaponInstanceData;
+	TWeakObjectPtr<UWeaponTypeData> WeaponTypeData;
 
 };

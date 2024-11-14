@@ -5,9 +5,9 @@
 
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
-#include "Inventory/InventoryItem.h"
+#include "Inventory/InventoryItemInstanceData.h"
 
-void UItemInfoWidget::SetNewItem(UInventoryItem* Item)
+void UItemInfoWidget::SetNewItem(UInventoryItemInstanceData* Item)
 {
 	if(IsValid(Item))
 	{

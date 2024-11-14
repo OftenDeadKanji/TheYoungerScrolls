@@ -6,7 +6,7 @@
 #include "Core/Characters/CharacterEx.h"
 #include "Core/Characters/Components/InventoryComponent.h"
 #include "Core//Controllers/MainPlayerController.h"
-#include "Inventory/InventoryItem.h"
+#include "Inventory/InventoryItemInstanceData.h"
 
 AInventoryItemPickup::AInventoryItemPickup()
 {
@@ -39,48 +39,21 @@ bool AInventoryItemPickup::IsInteractionByServerRequired_Implementation() const
 	return true;
 }
 
-void AInventoryItemPickup::BeginPlay()
+void AInventoryItemPickup::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
-	Super::BeginPlay();
+	Super::PostEditChangeProperty(PropertyChangedEvent);
 
-	if(Item == nullptr)
+	FName PropertyName = PropertyChangedEvent.Property ? PropertyChangedEvent.Property->GetFName() : NAME_None;
+
+	if(PropertyName == GET_MEMBER_NAME_CHECKED(AInventoryItemPickup, Item))
 	{
-		InitItem(true);
-	}
-}
-
-void AInventoryItemPickup::TryToInitItem()
-{
-	InitItem(false);
-}
-
-void AInventoryItemPickup::InitItem(bool bDestroyOnFail)
-{
-	if(ItemData.TypeData == nullptr)
-	{
-		if (bDestroyOnFail)
+		if(IsValid(Item) && IsValid(Item->GetItemTypeData()) && IsValid(Item->GetItemTypeData()->GetPickUpMesh()))
 		{
-			Destroy();
+			GetStaticMeshComponent()->SetStaticMesh(Item->GetItemTypeData()->GetPickUpMesh());
 		}
-
-		return;
-	}
-
-	Item = ItemData.TypeData->CreateItem(this);
-	Item->SetCount(ItemData.Count);
-
-	if(Item == nullptr)
-	{
-		if(bDestroyOnFail)
+		else
 		{
-			Destroy();
+			GetStaticMeshComponent()->SetStaticMesh(nullptr);
 		}
-
-		return;
 	}
-
-	UStaticMesh* Mesh = Item->GetItemTypeData()->GetStaticMesh();
-	UStaticMeshComponent* MeshComponent = GetStaticMeshComponent();
-
-	MeshComponent->SetStaticMesh(Mesh);
 }

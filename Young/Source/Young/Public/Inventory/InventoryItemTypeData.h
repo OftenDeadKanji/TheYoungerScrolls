@@ -6,7 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "InventoryItemTypeData.generated.h"
 
-class UInventoryItem;
+class UInventoryItemInstanceData;
 
 UCLASS(BlueprintType)
 class YOUNG_API UInventoryItemTypeData : public UDataAsset
@@ -16,11 +16,11 @@ class YOUNG_API UInventoryItemTypeData : public UDataAsset
 public:
 	const FText& GetShortName() const;
 	const FText& GetDescription() const;
-	UStaticMesh* GetStaticMesh() const;
+	UStaticMesh* GetPickUpMesh() const;
 	UTexture2D* GetIcon() const;
 	bool IsStackable() const;
 
-	virtual UInventoryItem* CreateItem(UObject* Outer = nullptr);
+	virtual UInventoryItemInstanceData* CreateItem(UObject* Outer = nullptr);
 protected:
 	UPROPERTY(EditAnywhere)
 	FText ShortName;
@@ -29,7 +29,7 @@ protected:
 	FText Description;
 
 	UPROPERTY(EditAnywhere)
-	UStaticMesh* StaticMesh;
+	UStaticMesh* PickUpMesh;
 
 	UPROPERTY(EditAnywhere)
 	UTexture2D* Icon;

@@ -6,6 +6,7 @@
 #include "UI/UserWidgetEx.h"
 #include "InventoryWidget.generated.h"
 
+class UInventoryItemInstanceData;
 class UCanvasPanel;
 class UInventorySectionWidget;
 class UButton;
@@ -22,6 +23,11 @@ public:
 	void Clear();
 
 protected:
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void OnItemClicked(UInventoryItemInstanceData* Items);
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextSectionName;
 	
