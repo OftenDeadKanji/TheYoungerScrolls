@@ -34,6 +34,8 @@ protected:
 	void Server_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
 	void Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
 
+	void EnterCombat();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UInventoryComponent> Inventory;
 
@@ -46,4 +48,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TWeakObjectPtr<AWeapon> EquippedWeaponRightHand;
+
+	UPROPERTY(Replicated)
+	EActionMode ActionMode;
 };

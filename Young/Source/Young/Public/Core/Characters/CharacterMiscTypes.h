@@ -32,3 +32,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseManaRegeneration;
 };
+
+UENUM(BlueprintType)
+enum class EActionMode : uint8
+{
+	// Main modes
+	Exploration,
+	Combat,
+
+	// Transition
+	ExplorationToCombat,
+	CombatToExploration
+};

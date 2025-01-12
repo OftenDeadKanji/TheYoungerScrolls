@@ -87,3 +87,7 @@ void ACharacterEx::Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponDa
 
 	EquippedWeaponRightHand = Weapon;
 }
+
+void ACharacterEx::EnterCombat()
+{
+}
