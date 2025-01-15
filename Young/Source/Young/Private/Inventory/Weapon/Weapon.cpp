@@ -27,4 +27,16 @@ void AWeapon::Init(UWeaponInstanceData* Data)
 		WeaponTypeData = Cast<UWeaponTypeData>(WeaponInstanceData->GetItemTypeData());
 	}
 
+	Mesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECR_Ignore);
+}
+
+UWeaponInstanceData* AWeapon::GetInstanceData() const
+{
+	return WeaponInstanceData.Get();
+
+}
+
+UWeaponTypeData* AWeapon::GetTypeData() const
+{
+	return WeaponTypeData.Get();
 }

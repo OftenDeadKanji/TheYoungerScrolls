@@ -70,6 +70,8 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(MainPlayerInputMappingContext->GetAction(TEXT("IA_MainPlayer_Use")), ETriggerEvent::Started, this, &AMainPlayer::Use);
 
 	EnhancedInputComponent->BindAction(MainPlayerInputMappingContext->GetAction(TEXT("IA_MainPlayer_ToggleInventory")), ETriggerEvent::Started, PlayerController->GetHUD<AMainPlayerHUD>(), &AMainPlayerHUD::ToggleInventory);
+
+	EnhancedInputComponent->BindAction(MainPlayerInputMappingContext->GetAction(TEXT("IA_MainPlayer_ToggleItem1")), ETriggerEvent::Started, this, &AMainPlayer::ToggleItem1);
 }
 
 void AMainPlayer::Tick(float DeltaSeconds)
@@ -156,6 +158,21 @@ void AMainPlayer::Use(const FInputActionValue& Value)
 		else
 		{
 			IInteractable::Execute_Local_OnUsePressed(Interactable.GetObject(), Cast<AMainPlayerController>(GetController()));
+		}
+	}
+}
+
+void AMainPlayer::ToggleItem1(const FInputActionValue& Value)
+{
+	if(EquippedWeaponRightHand.IsValid())
+	{
+		if(IsValid(DrawSwordMontage))
+		{
+			PlayAnimMontage(DrawSwordMontage);
+		}
+		else
+		{
+			EnteredCombat();
 		}
 	}
 }

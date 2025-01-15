@@ -88,6 +88,21 @@ void ACharacterEx::Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponDa
 	EquippedWeaponRightHand = Weapon;
 }
 
-void ACharacterEx::EnterCombat()
+void ACharacterEx::DrawnWeapon()
 {
+	if (EquippedWeaponRightHand.IsValid() == false)
+	{
+		return;
+	}
+
+	if (UWeaponTypeData* WeaponData = EquippedWeaponRightHand->GetTypeData())
+	{
+		EquippedWeaponRightHand->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponData->GetMeshSocketDrawn());
+	}
 }
+
+void ACharacterEx::EnteredCombat()
+{
+	OnEnteredCombatDelegate.Broadcast();
+}
+

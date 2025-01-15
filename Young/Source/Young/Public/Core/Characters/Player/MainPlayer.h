@@ -36,6 +36,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Use(const FInputActionValue& Value);
 
+	UFUNCTION(BlueprintCallable)
+	void ToggleItem1(const FInputActionValue& Value);
 #pragma endregion
 
 	UFUNCTION(Server, Reliable)

@@ -20,8 +20,14 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 protected:
+	UFUNCTION()
+	void EnteredCombat();
+
 	TWeakObjectPtr<AMainPlayer> OwningMainPlayer;
 
 	UPROPERTY(BlueprintReadOnly)
 	float Speed = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bInCombat = false;
 };

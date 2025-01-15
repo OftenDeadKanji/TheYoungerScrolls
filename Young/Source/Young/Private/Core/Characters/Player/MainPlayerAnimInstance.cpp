@@ -10,6 +10,11 @@ void UMainPlayerAnimInstance::NativeInitializeAnimation()
 	Super::NativeInitializeAnimation();
 
 	OwningMainPlayer = Cast<AMainPlayer>( GetOwningActor());
+
+	if (OwningMainPlayer.IsValid())
+	{
+		OwningMainPlayer->OnEnteredCombatDelegate.AddUniqueDynamic(this, &UMainPlayerAnimInstance::EnteredCombat);
+	}
 }
 
 void UMainPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -20,4 +25,9 @@ void UMainPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Speed = OwningMainPlayer->GetVelocity().Size();
 	}
+}
+
+void UMainPlayerAnimInstance::EnteredCombat()
+{
+	bInCombat = true;
 }

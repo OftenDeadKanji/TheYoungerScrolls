@@ -16,6 +16,9 @@ class YOUNG_API ACharacterEx : public ACharacter
 {
 	GENERATED_BODY()
 
+	friend class UKanjiklubAN_EnteredCombat;
+	friend class UKanjiklubAN_DrawWeapon;
+
 public:
 	ACharacterEx();
 
@@ -26,6 +29,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnteredCombat);
+	UPROPERTY(BlueprintAssignable)
+	FOnEnteredCombat OnEnteredCombatDelegate;
 protected:
 	virtual void BeginPlay() override;
 	virtual void Authority_StatsUpdateCallback();
@@ -34,7 +41,8 @@ protected:
 	void Server_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
 	void Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
 
-	void EnterCombat();
+	void DrawnWeapon();
+	void EnteredCombat();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UInventoryComponent> Inventory;
@@ -51,4 +59,7 @@ protected:
 
 	UPROPERTY(Replicated)
 	EActionMode ActionMode;
+
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* DrawSwordMontage;
 };

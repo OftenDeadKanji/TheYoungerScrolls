@@ -19,6 +19,8 @@ public:
 
 	virtual void Init(UWeaponInstanceData* Data);
 
+	UWeaponInstanceData* GetInstanceData() const;
+	UWeaponTypeData* GetTypeData() const;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UMeshComponent> Mesh;
