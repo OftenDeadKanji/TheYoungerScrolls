@@ -5,6 +5,7 @@
 
 #include "Core/Characters/Components/InventoryComponent.h"
 #include "Core/Characters/Player/MainPlayer.h"
+#include "Inventory/Weapon/WeaponTypeData.h"
 
 void UWeaponInstanceData::AddSelfToInventory(UInventoryComponent* Inventory)
 {
@@ -13,11 +14,27 @@ void UWeaponInstanceData::AddSelfToInventory(UInventoryComponent* Inventory)
 	Inventory->AddWeapon(this);
 }
 
-void UWeaponInstanceData::Use_Implementation(APlayerController* Player)
+void UWeaponInstanceData::Use_Implementation(AController* Player)
 {
 	IUsableItem::Use_Implementation(Player);
 
-	AMainPlayer* PlayerCharacter = Player->GetPawn<AMainPlayer>();
+	ACharacterEx* Character = Player->GetPawn<ACharacterEx>();
+	if(IsValid(Character) == false)
+	{
+		return;
+	}
 
-	PlayerCharacter->EquipWeapon_RightHand(this);
+	UWeaponTypeData* TypeData = Cast<UWeaponTypeData>(Data);
+	check(TypeData);
+
+	EWeaponAllowedHandMode AllowedHandMode = TypeData->GetAllowedHandMode();
+	if (AllowedHandMode == EWeaponAllowedHandMode::Any || AllowedHandMode == EWeaponAllowedHandMode::Both || AllowedHandMode == EWeaponAllowedHandMode::RightHand)
+	{
+		Character->ToggleWeapon_RightHand(this);
+	}
+}
+
+void UWeaponInstanceData::SetHandMode(EWeaponCurrentHandMode InHandMode)
+{
+	CurrentHandMode = InHandMode;
 }

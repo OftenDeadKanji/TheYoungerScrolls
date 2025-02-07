@@ -7,6 +7,15 @@
 #include "Inventory/UsableItem.h"
 #include "WeaponInstanceData.generated.h"
 
+UENUM()
+enum class EWeaponCurrentHandMode : uint8
+{
+	None = 0,
+	RightHand = 1,
+	LeftHand = 2,
+	Both = 4
+};
+
 UCLASS()
 class YOUNG_API UWeaponInstanceData : public UInventoryItemInstanceData, public IUsableItem
 {
@@ -18,6 +27,11 @@ public:
 #pragma endregion
 
 #pragma region IUsableItem
-	virtual void Use_Implementation(APlayerController* Player) override;
+	virtual void Use_Implementation(AController* Player) override;
 #pragma endregion
+
+	void SetHandMode(EWeaponCurrentHandMode InHandMode);
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EWeaponCurrentHandMode CurrentHandMode = EWeaponCurrentHandMode::None;
 };

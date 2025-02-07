@@ -18,5 +18,5 @@ class YOUNG_API IUsableItem
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Use(APlayerController* Player);
+	void Use(AController* Player);
 };

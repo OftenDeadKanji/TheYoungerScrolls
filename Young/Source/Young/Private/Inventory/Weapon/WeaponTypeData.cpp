@@ -10,6 +10,11 @@ float UWeaponTypeData::GetDamage() const
 	return Damage;
 }
 
+EWeaponAllowedHandMode UWeaponTypeData::GetAllowedHandMode() const
+{
+	return AllowedHandMode;
+}
+
 const TSubclassOf<AWeapon>& UWeaponTypeData::GetActorClass() const
 {
 	return ActorClass;

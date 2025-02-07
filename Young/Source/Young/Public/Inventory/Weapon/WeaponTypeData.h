@@ -8,6 +8,15 @@
 
 class AWeapon;
 
+UENUM()
+enum class EWeaponAllowedHandMode : uint8
+{
+	RightHand = 1,
+	LeftHand = 2,
+	Both = 4,
+	Any = RightHand | LeftHand | Both
+};
+
 UCLASS()
 class YOUNG_API UWeaponTypeData : public UInventoryItemTypeData
 {
@@ -15,6 +24,8 @@ class YOUNG_API UWeaponTypeData : public UInventoryItemTypeData
 
 public:
 	float GetDamage() const;
+
+	EWeaponAllowedHandMode GetAllowedHandMode() const;
 
 	const TSubclassOf<AWeapon>& GetActorClass() const;
 
@@ -36,12 +47,15 @@ protected:
 	TSubclassOf<AWeapon> ActorClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float Damage = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EWeaponAllowedHandMode AllowedHandMode = EWeaponAllowedHandMode::RightHand;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UStaticMesh* StaticMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USkeletalMesh* SkeletalMesh;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float Damage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName MeshSocketSheathed;

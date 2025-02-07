@@ -34,15 +34,20 @@ const FCharacterStats& ACharacterEx::GetCharacterStats() const
 	return Stats;
 }
 
-void ACharacterEx::EquipWeapon_RightHand(UWeaponInstanceData* WeaponData)
+void ACharacterEx::ToggleWeapon_RightHand(UWeaponInstanceData* WeaponData)
 {
+	if(IsValid(WeaponData) == false)
+	{
+		return;
+	}
+
 	if(HasAuthority())
 	{
-		Authority_EquipWeapon_RightHand(WeaponData);
+		Authority_ToggleWeapon_RightHand(WeaponData);
 	}
 	else
 	{
-		Server_EquipWeapon_RightHand(WeaponData);
+		Server_ToggleWeapon_RightHand(WeaponData);
 	}
 }
 
@@ -63,13 +68,33 @@ void ACharacterEx::Authority_StatsUpdateCallback()
 	Stats.CurrentMana = FMath::Clamp(Stats.CurrentMana + Stats.BaseManaRegeneration * StatsUpdateRate, 0.0f, Stats.MaxMana);
 }
 
-void ACharacterEx::Server_EquipWeapon_RightHand_Implementation(UWeaponInstanceData* WeaponData)
+void ACharacterEx::Server_ToggleWeapon_RightHand_Implementation(UWeaponInstanceData* WeaponData)
 {
-	Authority_EquipWeapon_RightHand(WeaponData);
+	Authority_ToggleWeapon_RightHand(WeaponData);
 }
 
-void ACharacterEx::Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData)
+void ACharacterEx::Authority_ToggleWeapon_RightHand(UWeaponInstanceData* WeaponData)
 {
+	if(IsValid(WeaponData) == false)
+	{
+		return;
+	}
+
+	if (EquippedWeaponRightHand.IsValid())
+	{
+		const bool bUnequippedSameWeapon = EquippedWeaponRightHand->GetInstanceData() == WeaponData;
+
+		EquippedWeaponRightHand->Destroy();
+		EquippedWeaponRightHand.Reset();
+
+		if (bUnequippedSameWeapon)
+		{
+			if(Combat)
+			return;
+		}
+	}
+
+
 	UWorld* World = GetWorld();
 
 	FTransform SpawnTransform = GetActorTransform();
@@ -86,6 +111,7 @@ void ACharacterEx::Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponDa
 	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponTypeData->GetMeshSocketSheathed());
 
 	EquippedWeaponRightHand = Weapon;
+	WeaponData->SetHandMode(EWeaponCurrentHandMode::RightHand);
 }
 
 void ACharacterEx::DrawnWeapon()

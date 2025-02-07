@@ -28,7 +28,9 @@ public:
 	const FCharacterStats& GetCharacterStats() const;
 
 	UFUNCTION(BlueprintCallable)
-	void EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
+	void ToggleWeapon_RightHand(UWeaponInstanceData* WeaponData);
+	//void EquipWeapon_LeftHand(UWeaponInstanceData* WeaponData);
+	//void EquipWeapon_BothHands(UWeaponInstanceData* WeaponData);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnteredCombat);
 	UPROPERTY(BlueprintAssignable)
@@ -38,8 +40,8 @@ protected:
 	virtual void Authority_StatsUpdateCallback();
 
 	UFUNCTION(Server, Reliable)
-	void Server_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
-	void Authority_EquipWeapon_RightHand(UWeaponInstanceData* WeaponData);
+	void Server_ToggleWeapon_RightHand(UWeaponInstanceData* WeaponData);
+	void Authority_ToggleWeapon_RightHand(UWeaponInstanceData* WeaponData);
 
 	void DrawnWeapon();
 	void EnteredCombat();
